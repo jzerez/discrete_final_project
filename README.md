@@ -1,9 +1,16 @@
-# Stochastic Graph Traversal
+# Network Survivability Analysis
 ## MTH2110 Final Project
 *Jack Mao, Sander Miller, Jonathan Zerez*
+
 *Fall, 2020*
 
 ## Resources
+* [An Overview of Algorithms for Network Survivability](https://www.hindawi.com/journals/isrn/2012/932456/)
+* [https://www.math.arizona.edu/~glickenstein/math443f14/sadeghi.pdf](Survivable Network Design with Vertex and Edge Connectivity Constraints)
+* [Tutorialspoint Cut set and cut vertex of graph](https://www.tutorialspoint.com/cut-set-and-cut-vertex-of-graph)
+* [An efficient algorithm for cut vertex detection in wirelss sensor networks](https://ieeexplore.ieee.org/document/5541668)
+
+## Previous Resources (Stochastic Graph Traversal)
 * [Proof of Dijstra's correctness](https://web.engr.oregonstate.edu/~glencora/wiki/uploads/dijkstra-proof.pdf)
 * [Another proof of Dijkstra's](https://www.cs.auckland.ac.nz/software/AlgAnim/dij-proof.html)
 * [Learning to Solve Stochastic Shortest Path Problems](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.85.3901&rep=rep1&type=pdf)
