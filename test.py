@@ -24,6 +24,13 @@ def findArticulations(graph):
             articulationPoints.append(i)
 
     return articulationPoints
+
+
+def findLargestClique(graph):
+    """
+
+    """
+    return
 # Create a watts and strogatz graph. Creates a ring of 10 nodes, connected to their 3 nearest neighbors. there is a 0.4 probabilty that any edge will be re-wired.
 G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
 #tempGraph = copy.deepcopy(G)
