@@ -9,6 +9,7 @@
 * [https://www.math.arizona.edu/~glickenstein/math443f14/sadeghi.pdf](Survivable Network Design with Vertex and Edge Connectivity Constraints)
 * [Tutorialspoint Cut set and cut vertex of graph](https://www.tutorialspoint.com/cut-set-and-cut-vertex-of-graph)
 * [An efficient algorithm for cut vertex detection in wirelss sensor networks](https://ieeexplore.ieee.org/document/5541668)
+* [Review of the Bron-Kerbosch algorithm and variations](https://arxiv.org/pdf/1605.03871.pdf)
 
 ## Previous Resources (Stochastic Graph Traversal)
 * [Proof of Dijstra's correctness](https://web.engr.oregonstate.edu/~glencora/wiki/uploads/dijkstra-proof.pdf)
