@@ -22,3 +22,10 @@
 * Ditch the car analogy for now. To start, we will create an arbitrary stochastic graph in networkx with a small number of nodes and edges for more manageable testing
 * Talk through our project with Sarah to ensure that we are on a good path and that there is good rigourous math to be had. Also see if she has any suggestions
 * Use Jupyter notebooks with atom or vscode for the project and writeup
+
+### Schedule
+* 12/6 Finish implementing bk algorithm
+* 12/7 Write a proof of why bk algorithm works + ask sarah about the slides/video
+* 12/9 Applications of clique finding alg
+* 12/16 Final Presentation12 Day (3:05pm)
+* 12/17 Project Document Due (7:00pm)

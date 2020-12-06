@@ -1,3 +1,6 @@
+# Jack Mao's sandbox code
+# Please don't mess around with it
+
 # Bron–Kerbosch algorithm
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -31,7 +34,7 @@ def getSubgraphs(g):
     This is a helper function that finds all of the subgraphs in g
     """
     subgraphs = []
-    numSubgraphs = 2**len(g)
+    numSubgraphs = 2**len(g)-1
     for i in range(numSubgraphs):
         binaryString = str(bin(i)[2:])
         # sign extend
@@ -62,21 +65,21 @@ def findMaximalCliques(cliques):
 
     Note that this function is garbage if used on a random list of graphs
     """
-    results = np.array(copy.deepcopy(cliques))
-    indsToRemove = set([])
-    nodeSets = [set(clique.nodes) for clique in cliques]
+    results = copy.deepcopy(cliques)
 
+    nodeSets = [set(clique.nodes) for clique in cliques]
     for i, nodeSet1 in enumerate(nodeSets[:-1]):
+        print(nodeSet1)
         for j in range(i+1, len(cliques)):
             nodeSet2 = nodeSets[j]
             allNodes = nodeSet1.union(nodeSet2)
-
             if allNodes == nodeSet1:
-                indsToRemove.add(j)
+                results.remove(cliques[j])
             elif allNodes == nodeSet2:
-                indsToRemove.add(i)
-    return np.delete(results, np.array(list(indsToRemove)))
+                results.remove(cliques[i])
 
+    print(results)
+    return results
 def bk(g, r,p,x):
     """
     Bron-Kerbosch without pivots
@@ -103,30 +106,36 @@ def bk_p(g,r,p,x):
     if not p and not x:
         return r
     pux = p.union(x)
-    pivot = pux[0]
+    pivot = list(pux)[0]
     nPivotNeighbors = p.difference(g.neighbors(pivot))
     for v in nPivotNeighbors:
-        bk_np(g, r.append(node), p.intersection(g.neighbors(v)), x.intersection(g.neighbors(v)))
-        p.remove(node)
-        x.append(node)
+        bk_p(g, r.add(v), p.intersection(g.neighbors(v)), x.intersection(g.neighbors(v)))
+        p.remove(v)
+        x.add(v)
 
-def bk_vo(P,R,X):
-    """
-    Bron-Kerbosch with vertex ordering
-    """
-    degenGraph =networkx.core_number(G)
-
-    for node in dg:
-
+# def bk_vo(g):
+#     """
+#     Bron-Kerbosch with vertex ordering
+#     """
+#     p =
+#     R = X = []
+#     for node in dg:
+#         bk_np(g, node, p.intersection(neighbors), x.intersection(neighbors))
+#         p.remove(node)
+#         x.append(node)
 
 # print([g.nodes for g in getSubgraphs(G)])
-# G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
-G = nx.generators.classic.complete_graph(5)
-
-plt.figure("G")
-subgraphs = bruteForce(G)[0]
-nx.draw_circular(subgraphs, with_labels=True)
-plt.show()
+G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
+# G = nx.generators.classic.complete_graph(3)
+r = {1, 5, 7}
+p = {2, 6, 9}
+x = {0, 4, 8}
+print(bk_p(G,r,p,x))
+# plt.figure("G")
+# subgraphs = bruteForce(G)[0]
+# nx.draw_circular(subgraphs, with_labels=True)
+# nx.draw_circular(G, with_labels=True)
+# plt.show()
 # for subgraph in subgraphs:
 #     plt.figure()
 #     nx.draw_circular(subgraph, with_labels=True)
