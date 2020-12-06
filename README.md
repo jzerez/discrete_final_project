@@ -23,3 +23,7 @@
 * Ditch the car analogy for now. To start, we will create an arbitrary stochastic graph in networkx with a small number of nodes and edges for more manageable testing
 * Talk through our project with Sarah to ensure that we are on a good path and that there is good rigourous math to be had. Also see if she has any suggestions
 * Use Jupyter notebooks with atom or vscode for the project and writeup
+
+### TODO 12/7
+* Go through BK proof/debug
+* Ask about presentation vs video
