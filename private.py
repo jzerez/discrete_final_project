@@ -99,19 +99,29 @@ def bk(g, r,p,x):
     return
 
 
-def bk_p(g,r,p,x):
+def bk_p(g,r,p,x, counter):
     """
     Bron-Kerbosch with pivots
     """
-    if not p and not x:
+    print("================================")
+    print("counter:\t", counter)
+    print("r:\t", r)
+    print("p:\t", p)
+    print("x:\t", x)
+    result = set()
+    if not (p and x):
         return r
     pux = p.union(x)
     pivot = list(pux)[0]
-    nPivotNeighbors = p.difference(g.neighbors(pivot))
-    for v in nPivotNeighbors:
-        bk_p(g, r.add(v), p.intersection(g.neighbors(v)), x.intersection(g.neighbors(v)))
+    npn = p.difference([a for a in g.neighbors(pivot)]) # not pivot neigbors
+    print("pivot:\t", pivot)
+    print("npn:\t", npn)
+    for v in npn:
+        vNeighbors = [a for a in g.neighbors(v)]
+        result.add(bk_p(g, r.add(v), p.intersection(vNeighbors), x.intersection(vNeighbors), counter+1))
         p.remove(v)
         x.add(v)
+    return result
 
 # def bk_vo(g):
 #     """
@@ -127,10 +137,11 @@ def bk_p(g,r,p,x):
 # print([g.nodes for g in getSubgraphs(G)])
 G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
 # G = nx.generators.classic.complete_graph(3)
-r = {1, 5, 7}
-p = {2, 6, 9}
-x = {0, 4, 8}
-print(bk_p(G,r,p,x))
+print(type([g for g in G.neighbors(0)]))
+r = set()
+p = {5}
+x = set()
+print(bk_p(G,r,p,x,0))
 # plt.figure("G")
 # subgraphs = bruteForce(G)[0]
 # nx.draw_circular(subgraphs, with_labels=True)
