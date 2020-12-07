@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pdb
 
-def bk(g, r,p,x):
+def bk(g, r,p,x, depth=0):
     """
     Bron-Kerbosch with pivots
     g: graph
@@ -17,22 +17,17 @@ def bk(g, r,p,x):
         print(r)
 
     while p:
-        # print(p)
         node = p.pop()
-        print(node)
-        print(r, p, x)
-        # print(r)
-        neighbors = g.neighbors(node)
-        # pdb.set_trace()
-        # r.update([node])
-        # p =  p.intersection(neighbors)
-
-        bk(g, r.union([node]), p.intersection(neighbors).union([node]), x.intersection(neighbors))
+        neighbors = list(g.neighbors(node))
+        n = len(neighbors)
+        bk(g, r.union([node]), p.intersection(neighbors), x.intersection(neighbors), depth=depth+1)
         x = x.union([node])
 
 
-G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
-# G = nx.generators.classic.complete_graph(5)
+# G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
+G = nx.generators.classic.complete_graph(3)
+G.add_node(3)
+G.add_edge(2,3)
 nx.draw_circular(G, with_labels=True)
 
 bk(G, set([]), set(G.nodes), set([]))
