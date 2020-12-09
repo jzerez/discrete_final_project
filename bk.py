@@ -77,23 +77,24 @@ def findMaximalCliques(cliques):
                 indsToRemove.add(i)
     return np.delete(results, np.array(list(indsToRemove)))
 
-def bk(g, r,p,x):
+def bk(g,r,p,x, depth=0):
     """
-    Bron-Kerbosch without pivots
+    Bron-Kerbosch with pivots
     g: graph
     r: disjoint set of vertices of graph g
     p: disjoint set of vertices of graph g
     x: disjoint set of vertices of graph g
     """
-    if not p and not x:
-        return r
 
-    for node in p:
-        neighbors = g.neighbors(node)
-        bk(g, r.add(node), p.intersection(neighbors), x.intersection(neighbors))
-        p.remove(node)
+    if not p and not x:
+        print('THIS IS WHAT IT IS:')
+        print(r)
+
+    while p:
+        node = p.pop()
+        neighbors = list(g.neighbors(node))
+        bk(g, r.union([node]), p.intersection(neighbors), x.intersection(neighbors), depth=depth+1)
         x = x.union([node])
-    return
 
 
 def bk_p(g,p,r,x, counter):
