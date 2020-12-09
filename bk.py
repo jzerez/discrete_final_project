@@ -96,20 +96,42 @@ def bk(g, r,p,x):
     return
 
 
-def bk_p(g,r,p,x):
+def bk_p(g,p,r,x, counter):
     """
     Bron-Kerbosch with pivots
     """
-    if not p and not x:
+    print("counter:\t", counter)
+    print("p:\t", p)
+    print("r:\t", r)
+    print("x:\t", x)
+    result = []
+    pux = set(p).union(set(x))
+    if len(pux) == 0:
+        print("return r: ", r)
         return r
-    pux = p.union(x)
-    pivot = pux[0]
-    nPivotNeighbors = p.difference(g.neighbors(pivot))
-    for v in nPivotNeighbors:
-        bk_np(g, r.append(node), p.intersection(g.neighbors(v)), x.intersection(g.neighbors(v)))
-        p.remove(node)
-        x.append(node)
-
+    else:
+        pivot = list(pux)[0]
+        pN = [n for n in g.neighbors(pivot)]
+        p_copy = copy.deepcopy(p)
+        print("P_COPY",p_copy)
+        print("P_N",pN)
+        for n in pN:
+            p_copy.remove(n)
+        for v in p_copy:
+            print("v: ", v)
+            vNeighbors = [a for a in g.neighbors(v)]
+            print("vNeighbors: \t", vNeighbors)
+            # pnnv, ruv, xnnv
+            print("================================")
+            result.append(bk_p(g, intersection(p,vNeighbors), r+[v], intersection(x, vNeighbors), counter+1))
+            print("================================")
+            print("result:\t", result, "\tv: ", v)
+            p.remove(v)
+            x.append(v)
+            print("fp:\t", p)
+            print("fr:\t", r)
+            print("fx:\t", x)
+    return result
 def bk_vo(P,R,X):
     """
     Bron-Kerbosch with vertex ordering

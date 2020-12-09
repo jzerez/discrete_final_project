@@ -99,49 +99,84 @@ def bk(g, r,p,x):
     return
 
 
-def bk_p(g,r,p,x, counter):
+def bk_p(g,p,r,x, counter):
     """
     Bron-Kerbosch with pivots
     """
-    print("================================")
     print("counter:\t", counter)
-    print("r:\t", r)
     print("p:\t", p)
+    print("r:\t", r)
     print("x:\t", x)
-    result = set()
-    if not (p and x):
+    result = []
+    pux = set(p).union(set(x))
+    if len(pux) == 0:
+        print("return r: ", r)
         return r
-    pux = p.union(x)
-    pivot = list(pux)[0]
-    npn = p.difference([a for a in g.neighbors(pivot)]) # not pivot neigbors
-    print("pivot:\t", pivot)
-    print("npn:\t", npn)
-    for v in npn:
-        vNeighbors = [a for a in g.neighbors(v)]
-        result.add(bk_p(g, r.add(v), p.intersection(vNeighbors), x.intersection(vNeighbors), counter+1))
-        p.remove(v)
-        x.add(v)
+    else:
+        for v in copy.deepcopy(p):
+            print("v: ", v)
+            vNeighbors = [a for a in g.neighbors(v)]
+            print("vNeighbors: \t", vNeighbors)
+            # pnnv, ruv, xnnv
+            print("================================")
+            result.append(bk_p(g, intersection(p,vNeighbors), r+[v], intersection(x, vNeighbors), counter+1))
+            print("================================")
+            print("result:\t", result, "\tv: ", v)
+            p.remove(v)
+            x.append(v)
+            print("fp:\t", p)
+            print("fr:\t", r)
+            print("fx:\t", x)
+    return result
+def bk_p2(g,p,r,x, counter):
+    """
+    Bron-Kerbosch with pivots
+    """
+    print("counter:\t", counter)
+    print("p:\t", p)
+    print("r:\t", r)
+    print("x:\t", x)
+    result = []
+    pux = set(p).union(set(x))
+    if len(pux) == 0:
+        print("return r: ", r)
+        return r
+    else:
+        pivot = list(pux)[0]
+        pN = [n for n in g.neighbors(pivot)]
+        p_copy = copy.deepcopy(p)
+        print("P_COPY",p_copy)
+        print("P_N",pN)
+        for n in pN:
+            p_copy.remove(n)
+        for v in p_copy:
+            print("v: ", v)
+            vNeighbors = [a for a in g.neighbors(v)]
+            print("vNeighbors: \t", vNeighbors)
+            # pnnv, ruv, xnnv
+            print("================================")
+            result.append(bk_p(g, intersection(p,vNeighbors), r+[v], intersection(x, vNeighbors), counter+1))
+            print("================================")
+            print("result:\t", result, "\tv: ", v)
+            p.remove(v)
+            x.append(v)
+            print("fp:\t", p)
+            print("fr:\t", r)
+            print("fx:\t", x)
     return result
 
-# def bk_vo(g):
-#     """
-#     Bron-Kerbosch with vertex ordering
-#     """
-#     p =
-#     R = X = []
-#     for node in dg:
-#         bk_np(g, node, p.intersection(neighbors), x.intersection(neighbors))
-#         p.remove(node)
-#         x.append(node)
+def intersection(lst1,lst2):
+    return list(set(lst1) & set(lst2))
 
 # print([g.nodes for g in getSubgraphs(G)])
 G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
 # G = nx.generators.classic.complete_graph(3)
 print(type([g for g in G.neighbors(0)]))
-r = set()
-p = {5}
-x = set()
-print(bk_p(G,r,p,x,0))
+p = [0,1,2,3,4,5,6,7,8,9]
+r = []
+x = []
+
+print(bk_p2(G,p,r,x,0))
 # plt.figure("G")
 # subgraphs = bruteForce(G)[0]
 # nx.draw_circular(subgraphs, with_labels=True)
