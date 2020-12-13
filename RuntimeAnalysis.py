@@ -6,6 +6,10 @@ import networkx as nx
 import numpy as np
 import copy
 import pdb
+from functools import partial
+import timeit
+import numpy as np
+from matplotlib import pyplot
 
 def intersection(lst1,lst2): 
     return list(set(lst1) & set(lst2))
@@ -124,12 +128,6 @@ def bk_p(g,r = set(),p=None,x = set(), counter=0):
 
 
 
-from functools import partial
-import timeit
-import numpy as np
-from matplotlib import pyplot
-
-
 def plot_time(func, inputs, repeats, n_tests):
     """
     Run timer and plot time complexity of `func` using the iterable `inputs`.
@@ -171,11 +169,5 @@ def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
 
 
 if __name__ == "__main__":
-    graphs = []
-    for i in range(5,11,2):
-        numConnections = round(.3*i)
-        g = nx.generators.random_graphs.connected_watts_strogatz_graph(i, numConnections, 0.4, seed=420)
-        graphs.append(g)
-
     plot_times([bk, bk_p],
-               range(5,100,1), repeats=10)
+               range(5,500,1), repeats=5)
