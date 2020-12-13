@@ -148,7 +148,8 @@ def bk_p2(g,p,r,x, counter):
         print("P_COPY",p_copy)
         print("P_N",pN)
         for n in pN:
-            p_copy.remove(n)
+            if n in p_copy:
+                p_copy.remove(n)
         for v in p_copy:
             print("v: ", v)
             vNeighbors = [a for a in g.neighbors(v)]
@@ -169,14 +170,26 @@ def intersection(lst1,lst2):
     return list(set(lst1) & set(lst2))
 
 # print([g.nodes for g in getSubgraphs(G)])
-G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
+# G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
 # G = nx.generators.classic.complete_graph(3)
-print(type([g for g in G.neighbors(0)]))
-p = [0,1,2,3,4,5,6,7,8,9]
+G = nx.Graph()
+G.add_node("A")
+G.add_node("B")
+G.add_node("C")
+G.add_node("D")
+G.add_node("Z")
+G.add_edge("A","B")
+G.add_edge("A","C")
+G.add_edge("B","C")
+G.add_edge("B","D")
+G.add_edge("Z","C")
+
+# print(type([g for g in G.neighbors(0)]))
+p = ["A","B","C","D", "Z"]
 r = []
 x = []
 
-print(bk_p2(G,p,r,x,0))
+print(bk_p(G,p,r,x,0))
 # plt.figure("G")
 # subgraphs = bruteForce(G)[0]
 # nx.draw_circular(subgraphs, with_labels=True)
