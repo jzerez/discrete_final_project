@@ -137,26 +137,26 @@ def bk_p2(g,p,r,x, counter):
     print("r:\t", r)
     print("x:\t", x)
     result = []
-    pux = set(p).union(set(x))
+    pux = p+x
     if len(pux) == 0:
         print("return r: ", r)
         return r
     else:
         pivot = list(pux)[0]
-        pN = [n for n in g.neighbors(pivot)]
+        pN = [a for a in g.neighbors(pivot)]
         p_copy = copy.deepcopy(p)
-        print("P_COPY",p_copy)
         print("P_N",pN)
         for n in pN:
             if n in p_copy:
                 p_copy.remove(n)
         for v in p_copy:
+            print("P_COPY",p_copy)
             print("v: ", v)
             vNeighbors = [a for a in g.neighbors(v)]
             print("vNeighbors: \t", vNeighbors)
             # pnnv, ruv, xnnv
             print("================================")
-            result.append(bk_p(g, intersection(p,vNeighbors), r+[v], intersection(x, vNeighbors), counter+1))
+            result.append(bk_p2(g, intersection(p,vNeighbors), r+[v], intersection(x, vNeighbors), counter+1))
             print("================================")
             print("result:\t", result, "\tv: ", v)
             p.remove(v)
@@ -189,7 +189,7 @@ p = ["A","B","C","D", "Z"]
 r = []
 x = []
 
-print(bk_p(G,p,r,x,0))
+print(bk_p2(G,p,r,x,0))
 # plt.figure("G")
 # subgraphs = bruteForce(G)[0]
 # nx.draw_circular(subgraphs, with_labels=True)
