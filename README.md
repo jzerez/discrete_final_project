@@ -1,8 +1,65 @@
-# Network Survivability Analysis
+# Maximal Clique Finding
 ## MTH2110 Final Project
 *Jack Mao, Sander Miller, Jonathan Zerez*
 
 *Fall, 2020*
+
+## Introduction
+Cliques are fully connected subgraphs of a larger graph. If you imagine a social network, if there is a friend-group where each person within the group is friends with every other person in the group, then that friend-group would be called a clique. A clique is considered to be maximal if no additional nodes can be added to the subgraph while keeping the subgraph a clique.
+
+Finding cliques and maximal cliques has a lot of real world applications, for exampled **[INSERT EXAMPLE HERE]** and is generally a really interesting problem to solve.
+
+In our project, we focused on implementing a number of different techniques to find the maximal cliques within a given graph G. We started off with a brute force algorithm that processes each and every possible unique subgraph and checks whether or not it is a maximal clique. From there, we implemented a few different versions of the Bron-Kerbosch algorithm, a recursive backtracking algorithm that is able to find the maximal cliques of a graph much more efficiently than a brute force method.
+
+## Real life Examples of Cliques
+
+
+## Explanation of Algorithm
+The Bron-Kerbosch algorithm is a recursive backtracking algorithm that is able to return the maximal cliques of a graph `G` in **ADD RUNTIME** time. This section will detail how the algorithm works and more importantly, why it works.
+
+We begin by defining three sets of nodes, `R`, `P` and `X`. These sets are defined to be completely disjoint from each other, meaning that an element found in one set must not also be found in any of the other sets, and will contain various nodes of the graph `G`.
+
+* `R` is defined as the set that contains nodes that are **certainly** contained within the current maximal clique that is being considered
+* `P` is defined as the set that contains nodes that **might** be contained within the current maximal clique that is being considered
+* `X` is defined as the set that contains nodes that are **definitely not** contained within the current maximal clique that is being considered
+
+The pseudocode for the algorithm looks something like this, where `N(n)` returns the set of nodes that are neighbors of node `n`:
+```
+Bron_Kerbosch(R, P, X):
+  if P is empty AND X is empty:
+    return R as a maximal clique
+
+  for each node n in P:
+    Bron_Kerbosch(R + n, P ∩ N(n), X ∩ N(n))
+    P = P - n
+    X = X + n
+```
+
+At the highest level, this pseudocode is essentially saying, "*for each node in a graph `G`, find a maximal clique that contains that node*". We will now explain why that is the case in more detail.
+
+For the sake of convenience, we will consider graph `G` to be the graph below. There may be nodes other than `a`, `b`, `c`, and `d`, but we will only iterate over these nodes for the sake of simplicity. We will call the set of all nodes `Q`
+
+**[INSERT GRAPH IMAGE HERE]**
+
+When the function is first called, `R` and `X` are empty since we have not explored any nodes and therefore cannot definitively say whether any particular node is or is not in the maximal clique.Therefore `P` is set equal to `Q` as we are unsure about all of the nodes inclusion in the current maximal clique. We set `n = a`, as `a` is the first element of `P`. Supposing that this node is part of a maximal clique, we will call the algorithm again, but this time, `a` will be a member of `R`. Because the nodes in a clique must be connected to every other node in a clique, the new set of possible clique nodes, `P`, is set to the intersection between `P` and the neighbors of `a`, `N(a)`. By the definition of a clique, all member nodes must be neighbors of every other node, therefore all possible clique members must be a neighbor of `a`. We find the intersection between `X` and `N(a)` for similar reasons: `X` only needs to keep track of nodes that are definitely not in the clique but that *could* be. In other words, it doesn't make sense for `X` to keep track of nodes that are obviously not members of the clique.
+
+So when we call `Bron_Kerbosch` for the second time, we find that `R = {a}`, `P = Q  ∩ N(a) = N(a) = {b,c}`, and `X = {}`. Now our goal is to find the maximal cliques of the graph that certainly contain `a` and could potentially contain `b` and `c`. We iterate through the nodes of `P` again, this time,  `n = b`. We call the function yet again.
+
+In the third call to the function, `R = {a,b}`, `P = {c}` and `X = {}`. Now our goal is to find the maximal cliques of the graph that certainly contain `a` and `b`, and could potentially contain `c`. We iterate through the nodes of `P` again, this time, `n = c`. We finally call the function again.
+
+In this fourth call to the function, `R = {a,b,c}`, `P = {}` and `X = {}`. When the function is called again, we find that both `P` and `X` are empty, so `R = {a,b,c}` is returned as a maximal clique. Checking with the graph visually, we find that this is indeed a maximal clique of the graph!
+
+We now go back up to the third call of the function, when `R = {a,b}`, `P = {c}` and `X = {}`. We already chose to iterate on `c`, so now we remove `c` from `P` and add `c` to `X`. We leave the function with `R = {a,b}`, `P = {}` and `X = {c}`. The function now ends and we don't return anything.
+
+We now go back up to the second call of the function, when `R = {a}`, `P = {b,c}`, and `X = {}`. Previously, `n = b`, so we'll add `b` to `X` and take `b` out of `P`. We'll then run the algorithm again with `n = c`.
+
+Now, we're in the fifth call of the function at depth ##. `R = {a,c}`, `P = {}`, and `X = {b}`. In this case, there are no nodes in `P` to iterate over, and so the function ends and we don't return anything.
+
+We're now back in the second call of the function at depth ##. `R = {a}`, `P = {c}`, and `X = {c}`. Because `n = c`, we remove `c` from `P` and add it to `X`. Now, because there are no nodes in `P` to iterate over the function ends and we don't return anything.
+
+Finally, we go back up to the first call of the function at depth ##. `R = {}`, `P = {a,b,c}` and `X = {}`. Because `n = a`, we will remove `a` from `P` and add it to `X`. Now `R = {}`, `P = {b,c}` and `X = {a}`. We have successfully found a maximal clique that contains `a`. Now the algorithm will continue in a similar manner to find the maximal cliques that contain `b`, then `c`, and so on.
+
+<!-- <img src="https://latex.codecogs.com/gif.latex?O_t=\text { Onset event at time bin } t " />  -->
 
 ## Resources
 * [An Overview of Algorithms for Network Survivability](https://www.hindawi.com/journals/isrn/2012/932456/)
