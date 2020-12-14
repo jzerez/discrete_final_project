@@ -37,27 +37,35 @@ Bron_Kerbosch(R, P, X):
 
 At the highest level, this pseudocode is essentially saying, "*for each node in a graph `G`, find a maximal clique that contains that node*". We will now explain why that is the case in more detail.
 
-For the sake of convenience, we will consider graph `G` to be the graph below. There may be nodes other than `a`, `b`, `c`, and `d`, but we will only iterate over these nodes for the sake of simplicity. We will call the set of all nodes `Q`
+For the sake of convenience, we will consider graph `G` to be the graph below. There may be nodes other than `a`, `b`, `c`, and `d`, but we will only iterate over these nodes for the sake of simplicity. We will suppose that there is a fully connected subgraph `Z` within `G` where each node in `Z` is connected to `c`. We will call the set of all nodes `Q`
 
-**[INSERT GRAPH IMAGE HERE]**
+![img](./images/base_graph.PNG)
 
 When the function is first called, `R` and `X` are empty since we have not explored any nodes and therefore cannot definitively say whether any particular node is or is not in the maximal clique. Therefore `P` is set equal to `Q` as we are unsure about all of the nodes included in the current maximal clique. We set `n = a`, as `a` is the first element of `P`. Supposing that this node is part of a maximal clique, we will call the algorithm again, but this time, `a` will be a member of `R`. Because the nodes in a clique must be connected to every other node in a clique, the new set of possible clique nodes, `P`, is set to the intersection between `P` and the neighbors of `a`, `N(a)`. By the definition of a clique, all member nodes must be neighbors of every other node, therefore all possible clique members must be a neighbor of `a`. We find the intersection between `X` and `N(a)` for similar reasons: `X` only needs to keep track of nodes that are definitely not in the clique or nodes that have already shared a maximal clique with the current node.
 
-So when we call `Bron_Kerbosch` for the second time, we find that `R = {a}`, `P = Q  ∩ N(a) = N(a) = {b,c}`, and `X = {}`. Now our goal is to find the maximal cliques of the graph that certainly contain `a` and could potentially contain `b` and `c`. We iterate through the nodes of `P` again, this time,  `n = b`. We call the function yet again.
+So when we call `Bron_Kerbosch` for the second time, dropping down to recursion depth 2, we find that `R = {a}`, `P = Q  ∩ N(a) = N(a) = {b,c}`, and `X = {}`. Now our goal is to find the maximal cliques of the graph that certainly contain `a` and could potentially contain `b` and `c`. We iterate through the nodes of `P` again, this time,  `n = b`. We call the function yet again.
 
-In the third call to the function, `R = {a,b}`, `P = {c}` and `X = {}`. Now our goal is to find the maximal cliques of the graph that certainly contain `a` and `b`, and could potentially contain `c`. We iterate through the nodes of `P` again, this time, `n = c`. We finally call the function again.
+In the third call to the function at recursion depth 3, `R = {a,b}`, `P = {c}` and `X = {}`. Now our goal is to find the maximal cliques of the graph that certainly contain `a` and `b`, and could potentially contain `c`. We iterate through the nodes of `P` again, this time, `n = c`. We finally call the function again.
 
-In this fourth call to the function, `R = {a,b,c}`, `P = {}` and `X = {}`. When the function is called again, we find that both `P` and `X` are empty, so `R = {a,b,c}` is returned as a maximal clique. Checking with the graph visually, we find that this is indeed a maximal clique of the graph!
+In this fourth call to the function at recursion depth 4, `R = {a,b,c}`, `P = {}` and `X = {}`. When the function is called again, we find that both `P` and `X` are empty, so `R = {a,b,c}` is returned as a maximal clique. Checking with the graph visually, we find that this is indeed a maximal clique of the graph!
 
-We now go back up to the third call of the function, when `R = {a,b}`, `P = {c}` and `X = {}`. We already chose to iterate on `c`, so now we remove `c` from `P` and add `c` to `X`. We leave the function with `R = {a,b}`, `P = {}` and `X = {c}`. The function now ends and we don't return anything.
+To see the steps to recurse back up the graph, see [Appendix A](#Appendix-A).
 
-We now go back up to the second call of the function, when `R = {a}`, `P = {b,c}`, and `X = {}`. Previously, `n = b`, so we'll add `b` to `X` and take `b` out of `P`. We'll then run the algorithm again with `n = c`.
+Once the program has recursed back to the first call of the algorithm, we find that `R = {}`, `P = {b,c,d,z}` and `X = {a}`. The algorithm will run again, this time starting with `n = b` to find a maximal clique that contains `b`, but does not contain `a`. This happens to be the set `{b,d}`. This demonstrates why nodes `b` and `c` cannot immediately be added to `X`, despite being members of the first maximal clique found, `{a,b,c}`
 
-Now, we're in the fifth call of the function at depth ##. `R = {a,c}`, `P = {}`, and `X = {b}`. In this case, there are no nodes in `P` to iterate over, and so the function ends and we don't return anything.
+Once the program recurses back to the first call of the algorithm again after finding a maximal clique that contains `b`, but not `a`, we find that `R = {}`, `P = {c,d,z}` and `X = {a,b}`. The algorithm will run again, this time starting with `n = c` to find the maximal clique that contains `c`, but does not contain `b` or `a`. This happens to be the set `{c,z}`, again, demonstrating that nodes can only be added to `X` one at a time. To assign all nodes from a found maximal clique to `X` would risk missing the opportunity to identify additional maximal cliques. 
 
-We're now back in the second call of the function at depth ##. `R = {a}`, `P = {c}`, and `X = {c}`. Because `n = c`, we remove `c` from `P` and add it to `X`. Now, because there are no nodes in `P` to iterate over the function ends and we don't return anything.
+### Appendix A
+#### Reverse Recursion to the top of the call stack
+We now go back up to the third call of the function at recursion depth 3, when `R = {a,b}`, `P = {c}` and `X = {}`. We already chose to iterate on `c`, so now we remove `c` from `P` and add `c` to `X`. We leave the function with `R = {a,b}`, `P = {}` and `X = {c}`. The function now ends and we don't return anything.
 
-Finally, we go back up to the first call of the function at depth ##. `R = {}`, `P = {a,b,c}` and `X = {}`. Because `n = a`, we will remove `a` from `P` and add it to `X`. Now `R = {}`, `P = {b,c}` and `X = {a}`. We have successfully found a maximal clique that contains `a`. Now the algorithm will continue in a similar manner to find the maximal cliques that contain `b`, then `c`, and so on.
+We now go back up to the second call of the function at recursion depth 2, when `R = {a}`, `P = {b,c}`, and `X = {}`. Previously, `n = b`, so we'll add `b` to `X` and take `b` out of `P`. We'll then run the algorithm again with `n = c`.
+
+Now, we're in the fifth call of the function at depth 3. `R = {a,c}`, `P = {}`, and `X = {b}`. In this case, there are no nodes in `P` to iterate over, and so the function ends and we don't return anything.
+
+We're now back in the second call of the function at depth 2. `R = {a}`, `P = {c}`, and `X = {c}`. Because `n = c`, we remove `c` from `P` and add it to `X`. Now, because there are no nodes in `P` to iterate over the function ends and we don't return anything.
+
+Finally, we go back up to the first call of the function at depth 1. `R = {}`, `P = {a,b,c}` and `X = {}`. Because `n = a`, we will remove `a` from `P` and add it to `X`. Now `R = {}`, `P = {b,c}` and `X = {a}`. We have successfully found a maximal clique that contains `a`. Now the algorithm will continue in a similar manner to find the maximal cliques that contain `b`, then `c`, and so on.
 
 <!-- <img src="https://latex.codecogs.com/gif.latex?O_t=\text { Onset event at time bin } t " />  -->
 
