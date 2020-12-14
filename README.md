@@ -88,6 +88,8 @@ Bron_Kerbosch(R, P, X):
     X = X + n
 ```
 
+For a graph with many non-maximal cliques, for instance, a sufficiently large complete graph, the algorithm with pivots performs much better. This is due to the fact that every time we call the algorithm, we do not iterate through the neighbors of our pivot. This is efficient because we know that given the maximal clique of the pivot, the nodes in `N(pivot)` cannot form a maximal clique with each other because we know that they are all connect to the pivot. After finding all of the maximal cliques between `P-N(pivot)`, we consider the case `P'` as the set of nodes that have possible cliques within the set `N(pivot)` because we have previously removed the nodes that have been passed through. Since we know that any node in `P'` has a connection with pivot, it cannot form any more maximal cliques within itself. Thus, we can disregard them. 
+
 ## Resources
 * [An Overview of Algorithms for Network Survivability](https://www.hindawi.com/journals/isrn/2012/932456/)
 * [https://www.math.arizona.edu/~glickenstein/math443f14/sadeghi.pdf](Survivable Network Design with Vertex and Edge Connectivity Constraints)
