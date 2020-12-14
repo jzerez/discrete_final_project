@@ -53,7 +53,7 @@ To see the steps to recurse back up the graph, see [Appendix A](#Appendix-A).
 
 Once the program has recursed back to the first call of the algorithm, we find that `R = {}`, `P = {b,c,d,z}` and `X = {a}`. The algorithm will run again, this time starting with `n = b` to find a maximal clique that contains `b`, but does not contain `a`. This happens to be the set `{b,d}`. This demonstrates why nodes `b` and `c` cannot immediately be added to `X`, despite being members of the first maximal clique found, `{a,b,c}`
 
-Once the program recurses back to the first call of the algorithm again after finding a maximal clique that contains `b`, but not `a`, we find that `R = {}`, `P = {c,d,z}` and `X = {a,b}`. The algorithm will run again, this time starting with `n = c` to find the maximal clique that contains `c`, but does not contain `b` or `a`. This happens to be the set `{c,z}`, again, demonstrating that nodes can only be added to `X` one at a time. To assign all nodes from a found maximal clique to `X` would risk missing the opportunity to identify additional maximal cliques. 
+Once the program recurses back to the first call of the algorithm again after finding a maximal clique that contains `b`, but not `a`, we find that `R = {}`, `P = {c,d,z}` and `X = {a,b}`. The algorithm will run again, this time starting with `n = c` to find the maximal clique that contains `c`, but does not contain `b` or `a`. This happens to be the set `{c,z}`, again, demonstrating that nodes can only be added to `X` one at a time. To assign all nodes from a found maximal clique to `X` would risk missing the opportunity to identify additional maximal cliques.
 
 ### Appendix A
 #### Reverse Recursion to the top of the call stack
@@ -71,11 +71,22 @@ Finally, we go back up to the first call of the function at depth 1. `R = {}`, `
 
 ## Bron_Kerbosch with Pivot
 
+
 In the previous algorithm, we essentially iterated through all of the nodes in g given graph `G`. Although this will definitively give you all of the maximal cliques in `G`, the implementation repeats itself by checking for nodes that we know to have been in a maximal clique. To optimize our algorithm, we introduce an idea called a pivot. Given the same conditions in the previous implementation of Bron_Kerbosch algorithm, we define a pivot as an arbitrary node chosen from the union of the sets `P` and `X`, which we call `PUX`. In our implementation, we simply chose the first element in `PUX`, which we designate as `u`.
 
-The new algorithm starts off the same way as the previous algorithm by checking if `P` and `X` are both empty. If this is true, then we return `R` as a maximal clique. If this is not true, we carry on with our algorithm by assigning our pivot. Then, we iterate through every node in `P - N(u)`. Let's call the first node in this iteration `v`. We recursively call the algorithm, except we set `R` to `R` union `v`, `P` to `P` intersection `N(v)`, and `X` to `X` intersection `N(v)`. After the recursion, we remove `v` from `P` and add it to `X`.    
+The new algorithm starts off the same way as the previous algorithm by checking if `P` and `X` are both empty. If this is true, then we return `R` as a maximal clique. If this is not true, we carry on with our algorithm by assigning our pivot. Then, we iterate through every node in `P - N(u)`. Let's call the first node in this iteration `v`. We recursively call the algorithm, except we set `R` to `R` union `v`, `P` to `P` intersection `N(v)`, and `X` to `X` intersection `N(v)`. After the recursion, we remove `v` from `P` and add it to `X`. Pseudocode of the algorithm is provided below.   
 
-**Insert Pseudocode/Image Here**
+```
+Bron_Kerbosch(R, P, X):
+  if P is empty AND X is empty:
+    return R as a maximal clique
+  PUX = P union X
+  pivot = P[0]
+  for each node n in P - N(pivot):
+    Bron_Kerbosch(R + n, P ∩ N(n), X ∩ N(n))
+    P = P - n
+    X = X + n
+```
 
 ## Resources
 * [An Overview of Algorithms for Network Survivability](https://www.hindawi.com/journals/isrn/2012/932456/)
