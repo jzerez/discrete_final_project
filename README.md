@@ -39,7 +39,7 @@ At the highest level, this pseudocode is essentially saying, "*for each node in 
 
 For the sake of convenience, we will consider graph `G` to be the graph below. There may be nodes other than `a`, `b`, `c`, and `d`, but we will only iterate over these nodes for the sake of simplicity. We will suppose that there is a fully connected subgraph `Z` within `G` where each node in `Z` is connected to `c`. We will call the set of all nodes `Q`
 
-![img](./images/base_graph.png)
+![img](./images/base_graph.PNG)
 
 When the function is first called, `R` and `X` are empty since we have not explored any nodes and therefore cannot definitively say whether any particular node is or is not in the maximal clique. Therefore `P` is set equal to `Q` as we are unsure about all of the nodes inclusion in the current maximal clique. We set `n = a`, as `a` is the first element of `P`. Supposing that this node is part of a maximal clique, we will call the algorithm again, but this time, `a` will be a member of `R`. Because the nodes in a clique must be connected to every other node in a clique, the new set of possible clique nodes, `P`, is set to the intersection between `P` and the neighbors of `a`, `N(a)`. By the definition of a clique, all member nodes must be neighbors of every other node, therefore all possible clique members must be a neighbor of `a`. We find the intersection between `X` and `N(a)` for similar reasons: `X` only needs to keep track of nodes that are definitely not in the clique but that *could* be. In other words, it doesn't make sense for `X` to keep track of nodes that are obviously not members of the clique.
 
