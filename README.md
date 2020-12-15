@@ -53,7 +53,9 @@ To see the steps to recurse back up the graph, see [Appendix A](#Appendix-A).
 
 Once the program has recursed back to the first call of the algorithm, we find that `R = {}`, `P = {b,c,d,z}` and `X = {a}`. The algorithm will run again, this time starting with `n = b` to find a maximal clique that contains `b`, but does not contain `a`. This happens to be the set `{b,d}`. This demonstrates why nodes `b` and `c` cannot immediately be added to `X`, despite being members of the first maximal clique found, `{a,b,c}`
 
-Once the program recurses back to the first call of the algorithm again after finding a maximal clique that contains `b`, but not `a`, we find that `R = {}`, `P = {c,d,z}` and `X = {a,b}`. The algorithm will run again, this time starting with `n = c` to find the maximal clique that contains `c`, but does not contain `b` or `a`. This happens to be the set `{c,z}`, again, demonstrating that nodes can only be added to `X` one at a time. To assign all nodes from a found maximal clique to `X` would risk missing the opportunity to identify additional maximal cliques. 
+Once the program recurses back to the first call of the algorithm again after finding a maximal clique that contains `b`, but not `a`, we find that `R = {}`, `P = {c,d,z}` and `X = {a,b}`. The algorithm will run again, this time starting with `n = c` to find the maximal clique that contains `c`, but does not contain `b` or `a`. This happens to be the set `{c,z}`, again, demonstrating that nodes can only be added to `X` one at a time. To assign all nodes from a found maximal clique to `X` would risk missing the opportunity to identify additional maximal cliques.
+
+For a full visual demonstration of the recursive steps that the BK algorithm takes, see [Appendix B](#Appendix-B).
 
 ### Appendix A
 #### Reverse Recursion to the top of the call stack
@@ -66,6 +68,16 @@ Now, we're in the fifth call of the function at depth 3. `R = {a,c}`, `P = {}`, 
 We're now back in the second call of the function at depth 2. `R = {a}`, `P = {c}`, and `X = {c}`. Because `n = c`, we remove `c` from `P` and add it to `X`. Now, because there are no nodes in `P` to iterate over the function ends and we don't return anything.
 
 Finally, we go back up to the first call of the function at depth 1. `R = {}`, `P = {a,b,c}` and `X = {}`. Because `n = a`, we will remove `a` from `P` and add it to `X`. Now `R = {}`, `P = {b,c}` and `X = {a}`. We have successfully found a maximal clique that contains `a`. Now the algorithm will continue in a similar manner to find the maximal cliques that contain `b`, then `c`, and so on.
+
+### Appendix B
+#### Visual demonstration of BK algorithm
+For a full graphical representation of the steps that the BK algorithm takes while it is running, please refer to the following pdf. Note that nodes in set `R` are colored in green, nodes in set `P` are colored in blue, and nodes in set `X` are colored in red. Nodes with heavy outlines are nodes that are chosen from `P`. 
+
+<object data="./assets/BK-step-by-step.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="http://yoursite.com/BK-step-by-step.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
 
 <!-- <img src="https://latex.codecogs.com/gif.latex?O_t=\text { Onset event at time bin } t " />  -->
 
