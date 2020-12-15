@@ -55,6 +55,8 @@ Once the program has recursed back to the first call of the algorithm, we find t
 
 Once the program recurses back to the first call of the algorithm again after finding a maximal clique that contains `b`, but not `a`, we find that `R = {}`, `P = {c,d,z}` and `X = {a,b}`. The algorithm will run again, this time starting with `n = c` to find the maximal clique that contains `c`, but does not contain `b` or `a`. This happens to be the set `{c,z}`, again, demonstrating that nodes can only be added to `X` one at a time. To assign all nodes from a found maximal clique to `X` would risk missing the opportunity to identify additional maximal cliques.
 
+For a full visual demonstration of the recursive steps that the BK algorithm takes, see [Appendix B](#Appendix-B).
+
 ### Appendix A
 #### Reverse Recursion to the top of the call stack
 We now go back up to the third call of the function at recursion depth 3, when `R = {a,b}`, `P = {c}` and `X = {}`. We already chose to iterate on `c`, so now we remove `c` from `P` and add `c` to `X`. We leave the function with `R = {a,b}`, `P = {}` and `X = {c}`. The function now ends and we don't return anything.
@@ -66,6 +68,16 @@ Now, we're in the fifth call of the function at depth 3. `R = {a,c}`, `P = {}`, 
 We're now back in the second call of the function at depth 2. `R = {a}`, `P = {c}`, and `X = {c}`. Because `n = c`, we remove `c` from `P` and add it to `X`. Now, because there are no nodes in `P` to iterate over the function ends and we don't return anything.
 
 Finally, we go back up to the first call of the function at depth 1. `R = {}`, `P = {a,b,c}` and `X = {}`. Because `n = a`, we will remove `a` from `P` and add it to `X`. Now `R = {}`, `P = {b,c}` and `X = {a}`. We have successfully found a maximal clique that contains `a`. Now the algorithm will continue in a similar manner to find the maximal cliques that contain `b`, then `c`, and so on.
+
+### Appendix B
+#### Visual demonstration of BK algorithm
+For a full graphical representation of the steps that the BK algorithm takes while it is running, please refer to the following pdf. Note that nodes in set `R` are colored in green, nodes in set `P` are colored in blue, and nodes in set `X` are colored in red. Nodes with heavy outlines are nodes that are chosen from `P`.
+
+<object data="https://github.com/jzerez/discrete_final_project/blob/main/assets/BK-step-by-step.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://github.com/jzerez/discrete_final_project/blob/main/assets/BK-step-by-step.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/jzerez/discrete_final_project/blob/main/assets/BK-step-by-step.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
 
 <!-- <img src="https://latex.codecogs.com/gif.latex?O_t=\text { Onset event at time bin } t " />  -->
 
@@ -88,7 +100,7 @@ Bron_Kerbosch(R, P, X):
     X = X + n
 ```
 
-For a graph with many non-maximal cliques, for instance, a sufficiently large complete graph, the algorithm with pivots performs much better. This is due to the fact that every time we call the algorithm, we do not iterate through the neighbors of our pivot. This is efficient because we know that given the maximal clique of the pivot, the nodes in `N(pivot)` cannot form a maximal clique with each other because we know that they are all connect to the pivot. After finding all of the maximal cliques between `P-N(pivot)`, we consider the case `P'` as the set of nodes that have possible cliques within the set `N(pivot)` because we have previously removed the nodes that have been passed through. Since we know that any node in `P'` has a connection with pivot, it cannot form any more maximal cliques within itself. Thus, we can disregard them. 
+For a graph with many non-maximal cliques, for instance, a sufficiently large complete graph, the algorithm with pivots performs much better. This is due to the fact that every time we call the algorithm, we do not iterate through the neighbors of our pivot. This is efficient because we know that given the maximal clique of the pivot, the nodes in `N(pivot)` cannot form a maximal clique with each other because we know that they are all connect to the pivot. After finding all of the maximal cliques between `P-N(pivot)`, we consider the case `P'` as the set of nodes that have possible cliques within the set `N(pivot)` because we have previously removed the nodes that have been passed through. Since we know that any node in `P'` has a connection with pivot, it cannot form any more maximal cliques within itself. Thus, we can disregard them.
 
 ## Resources
 * [An Overview of Algorithms for Network Survivability](https://www.hindawi.com/journals/isrn/2012/932456/)
