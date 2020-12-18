@@ -57,27 +57,6 @@ Once the program recurses back to the first call of the algorithm again after fi
 
 For a full visual demonstration of the recursive steps that the BK algorithm takes, see [Appendix B](#Appendix-B).
 
-### Appendix A
-#### Reverse Recursion to the top of the call stack
-We now go back up to the third call of the function at recursion depth 3, when `R = {a,b}`, `P = {c}` and `X = {}`. We already chose to iterate on `c`, so now we remove `c` from `P` and add `c` to `X`. We leave the function with `R = {a,b}`, `P = {}` and `X = {c}`. The function now ends and we don't return anything.
-
-We now go back up to the second call of the function at recursion depth 2, when `R = {a}`, `P = {b,c}`, and `X = {}`. Previously, `n = b`, so we'll add `b` to `X` and take `b` out of `P`. We'll then run the algorithm again with `n = c`.
-
-Now, we're in the fifth call of the function at depth 3. `R = {a,c}`, `P = {}`, and `X = {b}`. In this case, there are no nodes in `P` to iterate over, and so the function ends and we don't return anything.
-
-We're now back in the second call of the function at depth 2. `R = {a}`, `P = {c}`, and `X = {c}`. Because `n = c`, we remove `c` from `P` and add it to `X`. Now, because there are no nodes in `P` to iterate over the function ends and we don't return anything.
-
-Finally, we go back up to the first call of the function at depth 1. `R = {}`, `P = {a,b,c}` and `X = {}`. Because `n = a`, we will remove `a` from `P` and add it to `X`. Now `R = {}`, `P = {b,c}` and `X = {a}`. We have successfully found a maximal clique that contains `a`. Now the algorithm will continue in a similar manner to find the maximal cliques that contain `b`, then `c`, and so on.
-
-### Appendix B
-#### Visual demonstration of BK algorithm
-For a full graphical representation of the steps that the BK algorithm takes while it is running, please refer to the following pdf. Note that nodes in set `R` are colored in green, nodes in set `P` are colored in blue, and nodes in set `X` are colored in red. Nodes with heavy outlines are nodes that are chosen from `P`.
-
-<object data="./assets/BK-step-by-step.pdf" type="application/pdf" width="700px" height="700px">
-    <embed src="http://yoursite.com/BK-step-by-step.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
 
 <!-- <img src="https://latex.codecogs.com/gif.latex?O_t=\text { Onset event at time bin } t " />  -->
 
@@ -102,29 +81,31 @@ Bron_Kerbosch(R, P, X):
 
 For a graph with many non-maximal cliques, for instance, a sufficiently large complete graph, the algorithm with pivots performs much better. This is due to the fact that every time we call the algorithm, we do not iterate through the neighbors of our pivot. This is efficient because we know that given the maximal clique of the pivot, the nodes in `N(pivot)` cannot form a maximal clique with each other because we know that they are all connect to the pivot. After finding all of the maximal cliques between `P-N(pivot)`, we consider the case `P'` as the set of nodes that have possible cliques within the set `N(pivot)` because we have previously removed the nodes that have been passed through. Since we know that any node in `P'` has a connection with pivot, it cannot form any more maximal cliques within itself. Thus, we can disregard them.
 
+### Appendix A
+#### Reverse Recursion to the top of the call stack
+We now go back up to the third call of the function at recursion depth 3, when `R = {a,b}`, `P = {c}` and `X = {}`. We already chose to iterate on `c`, so now we remove `c` from `P` and add `c` to `X`. We leave the function with `R = {a,b}`, `P = {}` and `X = {c}`. The function now ends and we don't return anything.
+
+We now go back up to the second call of the function at recursion depth 2, when `R = {a}`, `P = {b,c}`, and `X = {}`. Previously, `n = b`, so we'll add `b` to `X` and take `b` out of `P`. We'll then run the algorithm again with `n = c`.
+
+Now, we're in the fifth call of the function at depth 3. `R = {a,c}`, `P = {}`, and `X = {b}`. In this case, there are no nodes in `P` to iterate over, and so the function ends and we don't return anything.
+
+We're now back in the second call of the function at depth 2. `R = {a}`, `P = {c}`, and `X = {c}`. Because `n = c`, we remove `c` from `P` and add it to `X`. Now, because there are no nodes in `P` to iterate over the function ends and we don't return anything.
+
+Finally, we go back up to the first call of the function at depth 1. `R = {}`, `P = {a,b,c}` and `X = {}`. Because `n = a`, we will remove `a` from `P` and add it to `X`. Now `R = {}`, `P = {b,c}` and `X = {a}`. We have successfully found a maximal clique that contains `a`. Now the algorithm will continue in a similar manner to find the maximal cliques that contain `b`, then `c`, and so on.
+
+### Appendix B
+#### Visual demonstration of BK algorithm
+For a full graphical representation of the steps that the BK algorithm takes while it is running, please refer to the following pdf. Note that nodes in set `R` are colored in green, nodes in set `P` are colored in blue, and nodes in set `X` are colored in red. Nodes with heavy outlines are nodes that are chosen from `P`.
+
+<object data="./assets/BK-step-by-step.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="http://yoursite.com/BK-step-by-step.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
+
 ## Resources
 * [An Overview of Algorithms for Network Survivability](https://www.hindawi.com/journals/isrn/2012/932456/)
 * [https://www.math.arizona.edu/~glickenstein/math443f14/sadeghi.pdf](Survivable Network Design with Vertex and Edge Connectivity Constraints)
 * [Tutorialspoint Cut set and cut vertex of graph](https://www.tutorialspoint.com/cut-set-and-cut-vertex-of-graph)
 * [An efficient algorithm for cut vertex detection in wirelss sensor networks](https://ieeexplore.ieee.org/document/5541668)
 * [Review of the Bron-Kerbosch algorithm and variations](https://arxiv.org/pdf/1605.03871.pdf)
-
-## Previous Resources (Stochastic Graph Traversal)
-* [Proof of Dijstra's correctness](https://web.engr.oregonstate.edu/~glencora/wiki/uploads/dijkstra-proof.pdf)
-* [Another proof of Dijkstra's](https://www.cs.auckland.ac.nz/software/AlgAnim/dij-proof.html)
-* [Learning to Solve Stochastic Shortest Path Problems](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.85.3901&rep=rep1&type=pdf)
-* [Stochastic Graph Exploration](http://aris.me/pubs/stochastic-graph-exploration.pdf)
-* [Generic Algorithm for approximating solutions to stochastic shortest path](https://link.springer.com/chapter/10.1007/978-3-642-04944-6_8)
-
-### Meeting Notes 11/29
-* Spend monday's class getting familair with the problem of stochastic graphs. What are they? What are real life things that they can model? Are there closed form solutions to finding the shortest path through one?
-* Ditch the car analogy for now. To start, we will create an arbitrary stochastic graph in networkx with a small number of nodes and edges for more manageable testing
-* Talk through our project with Sarah to ensure that we are on a good path and that there is good rigourous math to be had. Also see if she has any suggestions
-* Use Jupyter notebooks with atom or vscode for the project and writeup
-
-### Schedule
-* 12/6 Finish implementing bk algorithm
-* 12/7 Write a proof of why bk algorithm works + ask sarah about the slides/video
-* 12/9 Applications of clique finding alg
-* 12/16 Final Presentation12 Day (3:05pm)
-* 12/17 Project Document Due (7:00pm)
