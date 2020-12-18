@@ -6,8 +6,6 @@ import copy
 import pdb
 
 
-
-# the max independent set in complement of graph G is a maximal clique in G
 def bruteForce(g):
     """
     g: a nx graph
@@ -22,8 +20,6 @@ def bruteForce(g):
             cliques.append(subGraph)
     return findMaximalCliques(cliques)
 
-
-
 def getSubgraphs(g):
     """
     g: a nx graph
@@ -32,11 +28,14 @@ def getSubgraphs(g):
     """
     subgraphs = []
     numSubgraphs = 2**len(g)
+
     for i in range(numSubgraphs):
+        # look, we're using bitstrings!
         binaryString = str(bin(i)[2:])
-        # sign extend
+        # pad the bitstring with leading zeros
         binaryString = "0" * (len(g) - len(binaryString)) + binaryString
         tempG = copy.deepcopy(g)
+        # Remove nodes corresponding to zeros in the bit string
         for j, character in enumerate(binaryString):
             if character == '0':
                 tempG.remove_node(j)
@@ -48,9 +47,9 @@ def isComplete(g):
     """
     g: a nx graph
 
-    Big brain way to see if a graph is complete. You use handshake theorem
-    to calculate the number of edges in a complete graph and compare it with
-    the number of edges in g.
+    Check if a graph is complete. You use handshake theorem to calculate the
+    number of edges in a complete graph and compare it with the number of edges
+    in g.
     """
     e = g.number_of_edges()
     n = g.number_of_nodes()
@@ -58,48 +57,55 @@ def isComplete(g):
 
 def findMaximalCliques(cliques):
     """
-    cliques: takes in a list of all cliques (type nx graph) of a graph G.
+    cliques: takes in a list of all cliques (type: nx graph) of a graph G.
 
-    Note that this function is garbage if used on a random list of graphs
+    Returns the list of  maximal cliques (ie: prunes out non-maximal cliques)
     """
     results = np.array(copy.deepcopy(cliques))
     indsToRemove = set([])
     nodeSets = [set(clique.nodes) for clique in cliques]
 
+    # compare every clique to every other clique
     for i, nodeSet1 in enumerate(nodeSets[:-1]):
         for j in range(i+1, len(cliques)):
             nodeSet2 = nodeSets[j]
             allNodes = nodeSet1.union(nodeSet2)
 
+            # check to see if one clique is fully contained in another
             if allNodes == nodeSet1:
                 indsToRemove.add(j)
             elif allNodes == nodeSet2:
                 indsToRemove.add(i)
+
+    # Remove non-maximal cliques
     return np.delete(results, np.array(list(indsToRemove)))
 
 def bk(g,r,p,x, depth=0):
     """
-    Bron-Kerbosch with pivots
-    g: graph
+    Bron-Kerbosch algorithm without pivots
+    g: an nx graph
     r: disjoint set of vertices of graph g
     p: disjoint set of vertices of graph g
     x: disjoint set of vertices of graph g
     """
-
+    # if p and x are empty:
     if not p and not x:
-        print('THIS IS WHAT IT IS:')
-        print(r)
+        print('Maximal Clique found: ', r)
 
     while p:
+        # choose and remove a node from p
         node = p.pop()
         neighbors = list(g.neighbors(node))
         bk(g, r.union([node]), p.intersection(neighbors), x.intersection(neighbors), depth=depth+1)
         x = x.union([node])
 
-
 def bk_p(g,p,r,x, counter):
     """
-    Bron-Kerbosch with pivots
+    Bron-Kerbosch algorithm without pivots
+    g: an nx graph
+    r: disjoint set of vertices of graph g
+    p: disjoint set of vertices of graph g
+    x: disjoint set of vertices of graph g
     """
     print("counter:\t", counter)
     print("p:\t", p)
@@ -133,15 +139,29 @@ def bk_p(g,p,r,x, counter):
             print("fr:\t", r)
             print("fx:\t", x)
     return result
-def bk_vo(P,R,X):
-    """
-    Bron-Kerbosch with vertex ordering
-    """
-    degenGraph =networkx.core_number(G)
 
-    for node in dg:
+    def bk_p2(g,r,p,x, counter=0):
+        """
+        Bron-Kerbosch algorithm without pivots (implemented with python sets)
+        g: an nx graph
+        r: disjoint set of vertices of graph g
+        p: disjoint set of vertices of graph g
+        x: disjoint set of vertices of graph g
+        """
+        pux = p.union(x)
+        if not pux:
+            print('Maximal clique found: ', r)
 
+        # choose an pivot from pux
+        pivot = next(iter(pux))
+        neighborsP = list(g.neighbors(pivot))
+        for v in p.difference(neighborsP):
+            neighborsV = list(g.neighbors(v))
+            bk_p(g, r.union([v]), p.intersection(neighborsV), x.intersection(neighborsV), counter+1)
+            p.remove(v)
+            x.add(v)
 
+            
 # print([g.nodes for g in getSubgraphs(G)])
 # G = nx.generators.random_graphs.connected_watts_strogatz_graph(10, 3, 0.4, seed=420)
 G = nx.generators.classic.complete_graph(5)
