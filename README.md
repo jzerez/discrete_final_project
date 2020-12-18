@@ -147,9 +147,11 @@ Step three consists of comparing each of the cliques found in step two to all of
 
 #### Total Brute Force Runtime
 
-Generally when giving the complete runtime of an algorithm, only the largest factor is considered significant. Depending on the runtime of the last step we can give a best and worst case scenario. Best case step 3 has a runtime of less than `2ⁿ`, meaning step one is the significant factor and the algorithm has a runtime of about `O(2ⁿ)`. Worst case scenario the runtime of step 3 is close to `O(2²ⁿ)`, giving the whole algorithm a runtime of about `O(2²ⁿ)`.
+Generally when giving the complete runtime of an algorithm, only the largest factor is considered significant. Depending on the runtime of the last step we can give a best and worst case scenario. Best case step 3 has a runtime of less than `2ⁿ`, meaning step one is the significant factor and the algorithm has a runtime of about `O(2ⁿ)`. Worst case scenario the runtime of step 3 is close to `O(2²ⁿ)`, giving the whole algorithm a runtime of about `O(2²ⁿ)`. This was supported experimentally.
 
-
+<p align="center">
+  <img height = 500 img src="images/bruteForceUpdatedLog.png" />
+</p>
 ### Bron-Kerbosch Runtimes
 We did some research into the runtime of the Bron-Kerbosch algorithm. From the wikipedia article we found it had a worst case runtime of O(3<sup>n/3</sup>). We looked into the proofs done by J. W. Moon and L. Moser, and D. R. Wood; however we ran out of time to work through the algorithms ourselves. Instead we decided to assess the runtimes experimentally. We tested the Bron-Kerbosch algorithm and its variation with pivoting on three types of graphs, complete graphs, path graphs, and Watts-Strogatz graphs. We chose complete graphs as they have the largest cliques to nodes ratio. We chose path graphs as they have the smallest cliques to nodes ratio, and we chose Watts-Strogatz graphs as they were good models of social networks.
 
