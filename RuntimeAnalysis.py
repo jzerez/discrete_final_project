@@ -136,7 +136,6 @@ def plot_time(func, inputs, repeats, n_tests):
 
     Run the function `n_tests` times per `repeats`.
     """
-   
     x, y, yerr = [], [], []
     for i in inputs:
         numConnections = round(.3*i)
@@ -157,10 +156,6 @@ def plot_time(func, inputs, repeats, n_tests):
          pyplot.plot(x,[(n**2)/(x[0]**2) for n in x], label = "n^2")
          pyplot.plot(x,[(2**n)/(2**x[0]) for n in x], label = "2^n")
          
-
-  
-
-
 def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
     """
     Run timer and plot time complexity of all `functions`,
@@ -182,8 +177,6 @@ def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
     else:
         pyplot.savefig(file_name)
     
-
-
 if __name__ == "__main__":
     plot_times([bk, bk_p],
                range(5,40,1), repeats=700)
