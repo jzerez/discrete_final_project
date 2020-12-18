@@ -95,8 +95,6 @@ def bk(g,r=set(),p=None,x=set(), depth=0):
     if p == None:
         p = set(g.nodes)
     if not p and not x:
-        #print('THIS IS WHAT IT IS:')
-        #print(r)
         return r
 
     while p:
@@ -114,7 +112,6 @@ def bk_p(g,r = set(),p=None,x = set(), counter=0):
         p = set(g.nodes)
     pux = p.union(x)
     if not pux:
-        #print(r)
         return r
 
     pivot = next(iter(pux))
@@ -134,16 +131,20 @@ def plot_time(func, inputs, repeats, n_tests):
 
     Run the function `n_tests` times per `repeats`.
     """
-    x, y, yerr = [], [], []
+    #Create lists to capture x and y values for runtimes
+    x, y= [], []
+
     for i in inputs:
-        numConnections = round(.3*i)
-        g = nx.generators.random_graphs.connected_watts_strogatz_graph(i, numConnections, 0.4, seed=400)
+        # Create the graph with i nodes
+        g = nx.generators.classic.complete_graph(i)
+
+        #Time each function and save time
         timer = timeit.Timer(partial(func, g))
         t = timer.repeat(repeat=repeats, number=n_tests)
         x.append(i)
         y.append(np.mean(t))
-        yerr.append(np.std(t) / np.sqrt(len(t)))
-    #print("X: "+str(y))
+
+    #Plot the runtime values
     pyplot.plot(x, y, '-o',label=func.__name__)
 
 
@@ -156,12 +157,17 @@ def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
 
     Adds a legend containing the labels added by `plot_time`.
     """
+
+    #Generate plots for each function
     for func in functions:
         plot_time(func, inputs, repeats, n_tests)
+    
+    #Plot all function runtimes
     pyplot.legend()
-    pyplot.title("Bron-Kerbosch Algorithm Run Times")
-    pyplot.xlabel("Graph Size")
+    pyplot.title("Bron-Kerbosch Algorithm Run Times Complete Graph")
+    pyplot.xlabel("Number of Nodes")
     pyplot.ylabel("Time [s]")
+    plt.show()
     if not file_name:
         pyplot.show()
     else:
@@ -169,5 +175,7 @@ def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
 
 
 if __name__ == "__main__":
-    plot_times([bk, bk_p],
-               range(5,500,1), repeats=5)
+
+    #Plot BruteForce, BK, and BK w/ pivoting
+    plot_times([bruteForce,bk, bk_p],
+               range(3,18,2), repeats=3)
