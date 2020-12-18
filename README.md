@@ -147,7 +147,7 @@ Step three consists of comparing each of the cliques found in step two to all of
 
 #### Total Brute Force Runtime
 
-Generally when giving the complete runtime of an algorithm, only the largest factor is considered significant. Depending on the run time of the last step we can 
+Generally when giving the complete runtime of an algorithm, only the largest factor is considered significant. Depending on the runtime of the last step we can give a best and worst case scenario. Best case step 3 has a runtime of less than `2ⁿ`, meaning step one is the significant factor and the algorithm has a runtime of about O(2ⁿ). Worst case scenario the runtime of step 3 is close to O(2²ⁿ), giving the whole algorithm a runtime of O(2²ⁿ).
 
 
 ## Annotated Bibliography
