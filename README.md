@@ -13,7 +13,7 @@ Finding cliques and maximal cliques has a lot of real world applications, for ex
 
 In our project, we focused on implementing a number of different techniques to find the maximal cliques within a given graph G. We started off with a brute force algorithm that processes each and every possible unique subgraph and checks whether or not it is a maximal clique. From there, we implemented a few different versions of the Bron-Kerbosch algorithm, a recursive backtracking algorithm that is able to find the maximal cliques of a graph much more efficiently than a brute force method.
 
-## Explanation of Bron Kerbosh Algorithm
+## Explanation of Bron-Kerbosch Algorithm
 The Bron-Kerbosch algorithm is a recursive backtracking algorithm that is able to return the maximal cliques of a graph `G`. This section will detail how the algorithm works and more importantly, why it works.
 
 We begin by defining three sets of nodes, `R`, `P` and `X`. These sets are defined to be completely disjoint from each other, meaning that an element found in one set must not also be found in any of the other sets, and will contain various nodes of the graph `G`.
@@ -56,7 +56,7 @@ Once the program recurses back to the first call of the algorithm again after fi
 
 For a full visual demonstration of the recursive steps that the BK algorithm takes, see [Appendix B](#Appendix-B).
 
-Our python implementation of the Bron-Kerbosh Algorithm can be found below. Full code can be found in `bk.py`
+Our python implementation of the Bron-Kerbosch Algorithm can be found below. Full code can be found in `bk.py`
 ```python
 def bk(g,r,p,x, depth=0):
     """
@@ -80,7 +80,7 @@ def bk(g,r,p,x, depth=0):
 
 <!-- <img src="https://latex.codecogs.com/gif.latex?O_t=\text { Onset event at time bin } t " />  -->
 
-## Explanation of Bron Kerbosch with pivoting
+## Explanation of Bron-Kerbosch with pivoting
 In the previous algorithm, we essentially iterated through all of the nodes in g given graph `G`. Although this will definitively give you all of the maximal cliques in `G`, the implementation repeats itself by checking for nodes that we know to have been in a maximal clique. To optimize our algorithm, we introduce an idea called a pivot. Given the same starting conditions in the previous implementation of Bron_Kerbosch algorithm, we define a pivot as an arbitrary node chosen from the union of the sets `P` and `X`, which we call `PUX`. In our implementation, we simply chose the first element in `PUX`, which we designate as `u`.
 
 The new algorithm starts off the same way as the previous algorithm by checking if `P` and `X` are both empty. If this is true, then we return `R` as a maximal clique. If this is not true, we carry on with our algorithm by assigning our pivot. Then, we iterate through every node in `P - N(u)`. Let's call the first node in this iteration `v`. We recursively call the algorithm, except we set `R` to `R` union `v`, `P` to `P` intersection `N(v)`, and `X` to `X` intersection `N(v)`. After the recursion, we remove `v` from `P` and add it to `X`. Pseudocode of the algorithm is provided below.   
@@ -102,7 +102,7 @@ At the highest level, this pseudocode is essentially saying, "*for each node in 
 
 For a graph with many non-maximal cliques, for instance, a sufficiently large complete graph, the algorithm with pivots performs much better. This is due to the fact that every time we call the algorithm, we do not iterate through the neighbors of our pivot. This is efficient because we know that given the maximal clique of the pivot, the nodes in `N(pivot)` cannot form a maximal clique with each other because we know that they are all connect to the pivot. In a thought experiment, we can try to understand which maximal cliques `N(pivot)` are allowed to exist in. First, nodes in the `N(pivot)` can form some number of maximal cliques with the `pivot` due to the definition of cliques. Next, we know that `P-N(pivot)-pivot` can also form some number of maximal cliques with `N(pivot)` because these cliques do not include the `pivot` and are thus unique. Lastly, the only nodes we have left are in the `N(pivot)`. We know that the maximal cliques they form cannot include nodes from `pivot` or `P-N(pivot)-pivot` because we have already found them and have placed them in the `X`. Hypothetically, if there was a clique in `N(pivot)`, we know a larger clique exists because we can just tag on `pivot` to it by the definition of `N(pivot)`. Thus, we do not have to iterate to the nodes in `N(pivot)`.
 
-Our python implementation of the Bron-Kerbosh Algorithm with pivoting can be found below. Full code can be found in `bk.py`
+Our python implementation of the Bron-Kerbosch Algorithm with pivoting can be found below. Full code can be found in `bk.py`
 ```python
 def bk_p2(g,r,p,x, counter=0):
       """
@@ -127,7 +127,7 @@ def bk_p2(g,r,p,x, counter=0):
 ```
 
 ### Bron-Kerbosch with Vertex Ordering
-During our time researching this topic, we came across a variation of Bron-Kerbosh algorithm called Bron-Kerbosch with vertex ordering. We did not have time to look deeply or implement it. However, after thoroughly understanding the Bron-Kerbosch algorithm, we have a good idea of what it should be. Based on the ideas of Bron-Kerbosch with pivoting, we know that we can reduce the runtime greatly by picking a pivot. We can take this a step further by choosing the vertex with the biggest degree instead of choosing arbitrarily. Doing this will ensure that the number of nodes we iterate through will be further reduced. In our hypothesis, this algorithm will run faster on average for graphs with many sufficiently large maximal cliques than Bron-Kerbosch with pivoting, especially for graphs with few large maximal cliques and some sporadic cliques. However, everything in this section is written is through conjecture and we don't have factual evident to back up our claims.
+During our time researching this topic, we came across a variation of Bron-Kerbosch algorithm called Bron-Kerbosch with vertex ordering. We did not have time to look deeply or implement it. However, after thoroughly understanding the Bron-Kerbosch algorithm, we have a good idea of what it should be. Based on the ideas of Bron-Kerbosch with pivoting, we know that we can reduce the runtime greatly by picking a pivot. We can take this a step further by choosing the vertex with the biggest degree instead of choosing arbitrarily. Doing this will ensure that the number of nodes we iterate through will be further reduced. In our hypothesis, this algorithm will run faster on average for graphs with many sufficiently large maximal cliques than Bron-Kerbosch with pivoting, especially for graphs with few large maximal cliques and some sporadic cliques. However, everything in this section is written is through conjecture and we don't have factual evident to back up our claims.
 
 
 ## Runtime Analysis
@@ -157,17 +157,17 @@ We did some research into runtime of the Bron-Kerbosch algorithm. From the wikip
   <img height = 500 img src="images/AllRuntimesUpdated.jpg" />
 </p>
 
-Experimentally we found that complete graphs, with many cliques, showed the biggest improvement from adding pivoting. On the complete graph the stadard Bron-Kerbosch algorithm ran in approximately `O(2ⁿ)` while the variation with pivoting ran in just over linear `O(n)` time. On path graphs both algorithms performed similarly in about `O(n)` time. Additionally in Watts-Strogatz graphs both performed in approximately `O(n²)` time.
+Experimentally we found that complete graphs, with many cliques, showed the biggest improvement from adding pivoting. On the complete graph the stadard Bron-Kerbosch algorithm ran in approximately `O(2ⁿ)` while the variation with pivoting ran in just over linear `O(n)` time. On path graphs both algorithms performed similarly in about `O(n)` time. Additionally in Watts-Strogatz graphs both performed in approximately `O(n²)` time. The code for generating these runtime graphs can be found in the `RuntimeAnalysis.py` file in our github repository.
 
 ## Annotated Bibliography
 ###### [1]: “Bron–Kerbosch algorithm,” *Wikipedia*. Dec. 01, 2020, Accessed: Dec. 17, 2020. [Online]. Available: https://en.wikipedia.org/w/index.php?title=Bron%E2%80%93Kerbosch_algorithm&oldid=991757554.
-We used the Wikipedia page for the Bron-Kerbosh algorithm for our jumping off point. This page pointed us to other useful resources and provided us the foundation upon which we could start to build our python implementation of the algorithm.
+We used the Wikipedia page for the Bron-Kerbosch algorithm for our jumping off point. This page pointed us to other useful resources and provided us the foundation upon which we could start to build our python implementation of the algorithm.
 
 ###### [2]: J. W. Moon and L. Moser, “On cliques in graphs,” *Israel J. Math.*, vol. 3, no. 1, pp. 23–28, Mar. 1965, doi: 10.1007/BF02760024.
 We used this paper to try to understand how to calculate the maximum number of cliques in a graph in order to estimate the worst-case runtime of some of our algorithms, particularly the brute-force algorithm.
 
 ###### [3]: D. R. Wood, “On the maximum number of cliques in a graph,” *Graphs and Combinatorics*, vol. 23, no. 3, pp. 337–352, Jun. 2007, doi: 10.1007/s00373-007-0738-8.
-We used this paper to try to understand how to calculate the maximum number of maximal cliques in a graph, also with the goal of determining the worst-case runtimes for our algorithms. In particular, the runtime of the Bron-Kerbosh algorithm without pivoting is dependent on the number of maximal cliques in a graph.
+We used this paper to try to understand how to calculate the maximum number of maximal cliques in a graph, also with the goal of determining the worst-case runtimes for our algorithms. In particular, the runtime of the Bron-Kerbosch algorithm without pivoting is dependent on the number of maximal cliques in a graph.
 
 
 
