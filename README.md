@@ -154,7 +154,7 @@ Generally when giving the complete runtime of an algorithm, only the largest fac
 We did some research into runtime of the Bron-Kerbosch algorithm. From the wikipedia article we found it had a worst case runtime of O(3<sup>n/3</sup>). We looked into the proofs done by J. W. Moon and L. Moser, and D. R. Wood; however we ran out of time to work through the algorithms ourselves. Instead we decidedd to assess the runtimes experimentally. We tested the Bron-Kerbosch algorithm and its variation with pivoting on thre types of graphs, complete graphs, path graphs, and Watts-Strogatz graphs. 
 
 <p align="center">
-  <img height = 500 img src="images/GraphsandRuntimes.jpg" />
+  <img height = 500 img src="images/AllRuntimesUpdated.jpg" />
 </p>
 
 
