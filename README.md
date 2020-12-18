@@ -57,7 +57,6 @@ Once the program recurses back to the first call of the algorithm again after fi
 
 For a full visual demonstration of the recursive steps that the BK algorithm takes, see [Appendix B](#Appendix-B).
 
-
 <!-- <img src="https://latex.codecogs.com/gif.latex?O_t=\text { Onset event at time bin } t " />  -->
 
 ## Bron_Kerbosch with Pivot
@@ -97,9 +96,9 @@ Finally, we go back up to the first call of the function at depth 1. `R = {}`, `
 #### Visual demonstration of BK algorithm
 For a full graphical representation of the steps that the BK algorithm takes while it is running, please refer to the following pdf. Note that nodes in set `R` are colored in green, nodes in set `P` are colored in blue, and nodes in set `X` are colored in red. Nodes with heavy outlines are nodes that are chosen from `P`.
 
-<object data="./assets/BK-step-by-step.pdf" type="application/pdf" width="700px" height="700px">
-    <embed src="http://yoursite.com/BK-step-by-step.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+<object data="https://github.com/jzerez/discrete_final_project/blob/main/assets/BK-step-by-step.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://github.com/jzerez/discrete_final_project/blob/main/assets/BK-step-by-step.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/jzerez/discrete_final_project/blob/main/assets/BK-step-by-step.pdf">Download PDF</a>.</p>
     </embed>
 </object>
 

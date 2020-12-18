@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 import timeit
 import random
 import matplotlib.pyplot as plt
@@ -136,17 +136,29 @@ def plot_time(func, inputs, repeats, n_tests):
 
     Run the function `n_tests` times per `repeats`.
     """
+   
     x, y, yerr = [], [], []
     for i in inputs:
         numConnections = round(.3*i)
-        g = nx.generators.random_graphs.connected_watts_strogatz_graph(i, numConnections, 0.4, seed=400)
-        timer = timeit.Timer(partial(func, g))
+        
+        gWatts = nx.generators.random_graphs.connected_watts_strogatz_graph(i, numConnections, 0.4, seed=400)
+        #gComplete = nx.generators.classic.complete_graph(i)
+        #gPath = nx.generators.classic.path_graph(i)
+        timer = timeit.Timer(partial(func, gWatts))
         t = timer.repeat(repeat=repeats, number=n_tests)
         x.append(i)
         y.append(np.mean(t))
         yerr.append(np.std(t) / np.sqrt(len(t)))
     #print("X: "+str(y))
-    pyplot.plot(x, y, '-o',label=func.__name__)
+        scalar = y[0]
+    pyplot.semilogy(x, y/scalar, '-o',label=func.__name__)
+    if func.__name__ == "bk_p": 
+         pyplot.plot(x,[n/x[0] for n in x], label = "n")
+         pyplot.plot(x,[(n**2)/(x[0]**2) for n in x], label = "n^2")
+         pyplot.plot(x,[(2**n)/(2**x[0]) for n in x], label = "2^n")
+         
+
+  
 
 
 def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
@@ -161,21 +173,18 @@ def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
     for func in functions:
         plot_time(func, inputs, repeats, n_tests)
     pyplot.legend()
-    pyplot.title("Bron-Kerbosch Algorithm Run Times")
+    pyplot.title("Bron-Kerbosch Algorithm Path Graph Run Times")
     pyplot.xlabel("Graph Size")
     pyplot.ylabel("Time [s]")
+    #pyplot.ylim([0.0001,1])
     if not file_name:
         pyplot.show()
     else:
         pyplot.savefig(file_name)
+    
 
 
 if __name__ == "__main__":
-    graphs = []
-    for i in range(5,11,2):
-        numConnections = round(.3*i)
-        g = nx.generators.random_graphs.connected_watts_strogatz_graph(i, numConnections, 0.4, seed=420)
-        graphs.append(g)
-
     plot_times([bk, bk_p],
-               range(5,100,1), repeats=10)
+               range(5,40,1), repeats=700)
+   
