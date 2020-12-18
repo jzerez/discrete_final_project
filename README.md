@@ -150,6 +150,9 @@ Step three consists of comparing each of the cliques found in step two to all of
 Generally when giving the complete runtime of an algorithm, only the largest factor is considered significant. Depending on the runtime of the last step we can give a best and worst case scenario. Best case step 3 has a runtime of less than `2ⁿ`, meaning step one is the significant factor and the algorithm has a runtime of about O(2ⁿ). Worst case scenario the runtime of step 3 is close to O(2²ⁿ), giving the whole algorithm a runtime of O(2²ⁿ).
 
 
+### Bron-Kerbosch Runtimes
+We did some research into runtime of the Bron-Kerbosch algorithm. From the wikipedia article we found it had a worst case runtime of O(3<sup>n/3</sup>). We looked into the proofs done by J. W. Moon and L. Moser, and D. R. Wood; however we ran out of time to work through the algorithms ourselves. Instead we decidedd to assess the runtimes experimentally. We tested the Bron-Kerbosch algorithm and its variation with pivoting on thre types of graphs, complete graphs, path graphs, and Watts-Strogatz graphs. 
+
 ## Annotated Bibliography
 ###### [1]: “Bron–Kerbosch algorithm,” *Wikipedia*. Dec. 01, 2020, Accessed: Dec. 17, 2020. [Online]. Available: https://en.wikipedia.org/w/index.php?title=Bron%E2%80%93Kerbosch_algorithm&oldid=991757554.
 We used the Wikipedia page for the Bron-Kerbosh algorithm for our jumping off point. This page pointed us to other useful resources and provided us the foundation upon which we could start to build our python implementation of the algorithm.
