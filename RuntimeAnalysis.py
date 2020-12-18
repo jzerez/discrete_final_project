@@ -135,19 +135,27 @@ def plot_time(func, inputs, repeats, n_tests):
     x, y= [], []
 
     for i in inputs:
-        # Create the graph with i nodes
-        g = nx.generators.classic.complete_graph(i)
 
+        # Create the graph with i nodes
+        gPath = nx.generators.classic.path_graph(i) #Path Graph
+        #gWatts = nx.generators.random_graphs.connected_watts_strogatz_graph(i, round(.3*i), 0.4, seed=400) #Watts-Strogatz Graph
+        #gComplete = nx.generators.classic.complete_graph(i) #Complete Graph
+       
         #Time each function and save time
-        timer = timeit.Timer(partial(func, g))
+        timer = timeit.Timer(partial(func, gPath))
         t = timer.repeat(repeat=repeats, number=n_tests)
         x.append(i)
         y.append(np.mean(t))
+   
+    #Plot scaled runtime values
+    pyplot.semilogy(x, y/y[0], '-o',label=func.__name__)
 
-    #Plot the runtime values
-    pyplot.plot(x, y, '-o',label=func.__name__)
-
-
+    #Add reference plots linear, n^2 and 2^n time
+    if func.__name__ == "bk_p": 
+         pyplot.plot(x,[n/x[0] for n in x], label = "n")
+         pyplot.plot(x,[(n**2)/(x[0]**2) for n in x], label = "n^2")
+         pyplot.plot(x,[(2**n)/(2**x[0]) for n in x], label = "2^n")
+         
 def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
     """
     Run timer and plot time complexity of all `functions`,
@@ -172,10 +180,9 @@ def plot_times(functions, inputs, repeats=3, n_tests=1, file_name=""):
         pyplot.show()
     else:
         pyplot.savefig(file_name)
-
-
+    
 if __name__ == "__main__":
 
     #Plot BruteForce, BK, and BK w/ pivoting
     plot_times([bruteForce,bk, bk_p],
-               range(3,18,2), repeats=3)
+               range(3,10,2), repeats=3)
